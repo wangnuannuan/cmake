@@ -1,0 +1,10 @@
+message("start get board")
+get_property(cached_board_value CACHE BOARD PROPERTY VALUE)
+message(${BOARD})
+
+if(EXISTS ${BOARD_ROOT}/${BOARD}/${BOARD}.cmake)
+    set(build_dir ${BOARD_ROOT}/${BOARD})
+else()
+    uset(build_dir)
+endif()
+add_subdirectory(${BOARD_ROOT} ${build_dir})

@@ -1,0 +1,2 @@
+/usr/bin/ar cr liblibcpuarc.a  CMakeFiles/libcpuarc.dir/arc_exc_asm.s.o CMakeFiles/libcpuarc.dir/arc_util.s.o 
+/usr/bin/ranlib liblibcpuarc.a 

@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/wang/Documents/PythonLearn/arc/arc_exc_asm.s
+arc.h
+/home/wang/Documents/PythonLearn/arc/arc.h
+arc_asm_common.h
+/home/wang/Documents/PythonLearn/arc/arc_asm_common.h
+
+/home/wang/Documents/PythonLearn/arc/arc_util.s
+arc.h
+/home/wang/Documents/PythonLearn/arc/arc.h
+arc_asm_common.h
+/home/wang/Documents/PythonLearn/arc/arc_asm_common.h
+

@@ -1,0 +1,142 @@
+      .container1.rom ALIGN(CONTAINER_ADDRESS_ALIGNMENT) : { _f_text_container1 = .; *(.container1.text .container1.text.*) . = ALIGN(CONTAINER_ADDRESS_ALIGNMENT); _e_text_container1 = .; _f_rodata_container1 = .; *(.container1.rodata .container1.rodata.*) _e_rodata_container1 = ALIGN(CONTAINER_ADDRESS_ALIGNMENT); } > NORMAL_ROM
+      .container2.rom ALIGN(CONTAINER_ADDRESS_ALIGNMENT) : { _f_text_container2 = .; *(.container2.text .container2.text.*) . = ALIGN(CONTAINER_ADDRESS_ALIGNMENT); _e_text_container2 = .; _f_rodata_container2 = .; *(.container2.rodata .container2.rodata.*) _e_rodata_container2 = ALIGN(CONTAINER_ADDRESS_ALIGNMENT); } > NORMAL_ROM
+      .container1.ram.data ALIGN(CONTAINER_ADDRESS_ALIGNMENT) : { _f_data_container1 = .; *(.container1.data .container1.data.*) _e_data_container1 = .; } > NORMAL_RAM AT > NORMAL_ROM .container1.ram.bss : { _f_bss_container1 = .; *(.container1.bss .container1.bss.*) _e_bss_container1 = ALIGN(CONTAINER_ADDRESS_ALIGNMENT); } > NORMAL_RAM _f_data_load_container1 = LOADADDR(.container1.ram.data);
+      .container2.ram.data ALIGN(CONTAINER_ADDRESS_ALIGNMENT) : { _f_data_container2 = .; *(.container2.data .container2.data.*) _e_data_container2 = .; } > NORMAL_RAM AT > NORMAL_ROM .container2.ram.bss : { _f_bss_container2 = .; *(.container2.bss .container2.bss.*) _e_bss_container2 = ALIGN(CONTAINER_ADDRESS_ALIGNMENT); } > NORMAL_RAM _f_data_load_container2 = LOADADDR(.container2.ram.data);
+      .container12_shared.ram.data ALIGN(CONTAINER_ADDRESS_ALIGNMENT) : { _f_data_container12_shared = .; *(.container12_shared.data .container12_shared.data.*) _e_data_container12_shared = .; } > NORMAL_RAM AT > NORMAL_ROM .container12_shared.ram.bss : { _f_bss_container12_shared = .; *(.container12_shared.bss .container12_shared.bss.*) _e_bss_container12_shared = ALIGN(CONTAINER_ADDRESS_ALIGNMENT); } > NORMAL_RAM _f_data_load_container12_shared = LOADADDR(.container12_shared.ram.data);
+MEMORY {
+ NORMAL_ROM : ORIGIN = 0x0, LENGTH = 0x20000
+ SECURE_ROM : ORIGIN = 0x20000, LENGTH = 0x20000
+ NORMAL_RAM : ORIGIN = 0x80000000, LENGTH = 0x10000
+ SECURE_RAM : ORIGIN = 0x80010000, LENGTH = 0x10000
+}
+ENTRY(_start)
+SECTIONS
+{
+ . = ORIGIN(SECURE_ROM);
+ .rom.secureshield ALIGN(32) : {
+  . = ALIGN(4);
+  _f_rom_secureshieldruntime = .;
+  KEEP(*(.rom.secureshield.secure .rom.secureshield.secure.*))
+  _f_cfg_secureshield = .;
+  . = ALIGN(32);
+  __secureshield_cfgtbl_start = .;
+  KEEP(*(.keep.secureshield.cfgtbl .keep.secureshield.cfgtbl.*))
+  . = ALIGN(32);
+  __secureshield_cfgtbl_end = .;
+  __secureshield_cfgtbl_ptr_start = .;
+  KEEP(*(.keep.secureshield.cfgtbl_ptr_first .keep.secureshield.cfgtbl_ptr_first.*))
+  KEEP(*(.keep.secureshield.cfgtbl_ptr .keep.secureshield.cfgtbl_ptr.*))
+  __secureshield_cfgtbl_ptr_end = .;
+  KEEP(*(.keep.secureshield.ac_table .keep.secureshield.ac_table.*))
+  . = ALIGN(32);
+  _e_cfg_secureshield = .;
+  _e_rom_secureshieldruntime = ALIGN(32);
+ } > SECURE_ROM
+ . = ORIGIN(SECURE_RAM);
+ .ram.secureshield ALIGN(32) (NOLOAD) : {
+  . = ALIGN(4);
+  _f_ram_secureshieldruntime = .;
+  KEEP(*(.ram.secureshield.secure .ram.secureshield.secure.*))
+  KEEP(*(.ram.secureshield.stack .ram.secureshield.stack.*))
+  _e_ram_secureshieldruntime = ALIGN(32);
+ } > SECURE_RAM
+ . = ORIGIN(NORMAL_ROM);
+ .init :
+ {
+  _f_text_background_container = .;
+  _f_init = .;
+  KEEP (*(.init_vector .init_vector.*))
+  KEEP (*(.init_bootstrap .init_bootstrap.*))
+  _e_init = .;
+ } > NORMAL_ROM
+ .vector : ALIGN(1024)
+ {
+  _f_vector = .;
+  *(.vector .vector.*)
+  _e_vector = .;
+ } > NORMAL_ROM
+ .text : ALIGN(4)
+ {
+  _f_text = .;
+  *( .text .text.* .gnu.linkonce.t.*)
+  _e_text = .;
+ } > NORMAL_ROM
+ .rodata : ALIGN(32)
+ {
+  _e_text_background_container = .;
+  _f_rodata_background_container = .;
+  _f_rodata = .;
+  . = ALIGN(4);
+  __CTOR_LIST__ = .;
+  LONG((__CTOR_END__ - __CTOR_LIST__) / 4 - 2)
+  KEEP(*(SORT_BY_NAME(".ctors*")))
+  LONG(0)
+  __CTOR_END__ = .;
+  . = ALIGN(4);
+  __init_array_start = .;
+  KEEP(*(SORT_BY_NAME(".init_array*")))
+  __init_array_end = .;
+  . = ALIGN(4);
+  __DTOR_LIST__ = .;
+  LONG((__DTOR_END__ - __DTOR_LIST__) / 4 - 2)
+  KEEP(*(SORT_BY_NAME(".dtors*")))
+  LONG(0)
+  __DTOR_END__ = .;
+  *( .rodata .rodata.* .gnu.linkonce.r.*)
+  _e_rodata = .;
+ } > NORMAL_ROM
+  _e_rodata_background_container = ALIGN(32);
+
+ . = ORIGIN(NORMAL_RAM);
+ .data : ALIGN(4)
+ { _f_data_background_container = .;
+  _f_data = .;
+  *( .data .data.* .gnu.linkonce.d.*)
+  _f_sdata = .;
+  __SDATA_BEGIN__ = .;
+  *( .sdata .sdata.* .gnu.linkonce.s.*)
+  PROVIDE (__sbss_start = .);
+  PROVIDE (___sbss_start = .);
+  _f_sbss = .;
+  *( .dynsbss)
+  *( .sbss .sbss.* .gnu.linkonce.sb.*)
+  *( .scommon)
+  _e_sbss = .;
+  PROVIDE (__sbss_end = .);
+  PROVIDE (___sbss_end = .);
+  _e_sdata = .;
+  _e_data = .;
+  _e_data_background_container = .;
+ } > NORMAL_RAM AT > NORMAL_ROM
+ .bss (NOLOAD) : ALIGN(4)
+ {
+  _f_bss_background_container = .;
+  _f_bss = .;
+  *( .dynbss)
+  *( .bss .bss.* .gnu.linkonce.b.*)
+  *( COMMON)
+  _e_bss = .;
+ } > NORMAL_RAM
+ .stack (NOLOAD) :
+ {
+  . = ALIGN(4);
+  _f_stack = .;
+  . = . + 2048;
+  _e_stack = .;
+ } > NORMAL_RAM
+ .heap (NOLOAD) :
+ {
+  . = ALIGN(4);
+  __start_heap = . ;
+  _f_heap = .;
+  . = . + 8192;
+  _e_heap = .;
+  __end_heap = . ;
+ } > NORMAL_RAM
+  _e_bss_background_container = ALIGN(32);
+
+ _load_addr_text = LOADADDR(.text);
+ _load_addr_rodata = LOADADDR(.rodata);
+ _load_addr_data = LOADADDR(.data);
+ _f_data_load_background_container = LOADADDR(.data);
+}

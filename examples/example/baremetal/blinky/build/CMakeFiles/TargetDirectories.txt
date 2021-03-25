@@ -1,0 +1,13 @@
+/home/wang/Documents/PythonLearn/example/baremetal/blinky/build/CMakeFiles/rebuild_cache.dir
+/home/wang/Documents/PythonLearn/example/baremetal/blinky/build/CMakeFiles/app.dir
+/home/wang/Documents/PythonLearn/example/baremetal/blinky/build/CMakeFiles/edit_cache.dir
+/home/wang/Documents/PythonLearn/example/baremetal/blinky/build/embarc_osp/CMakeFiles/rebuild_cache.dir
+/home/wang/Documents/PythonLearn/example/baremetal/blinky/build/embarc_osp/CMakeFiles/edit_cache.dir
+/home/wang/Documents/PythonLearn/example/baremetal/blinky/build/embarc_osp/inc/CMakeFiles/rebuild_cache.dir
+/home/wang/Documents/PythonLearn/example/baremetal/blinky/build/embarc_osp/inc/CMakeFiles/edit_cache.dir
+/home/wang/Documents/PythonLearn/example/baremetal/blinky/build/embarc_osp/board/CMakeFiles/rebuild_cache.dir
+/home/wang/Documents/PythonLearn/example/baremetal/blinky/build/embarc_osp/board/CMakeFiles/edit_cache.dir
+/home/wang/Documents/PythonLearn/example/baremetal/blinky/build/embarc_osp/device/CMakeFiles/rebuild_cache.dir
+/home/wang/Documents/PythonLearn/example/baremetal/blinky/build/embarc_osp/device/CMakeFiles/edit_cache.dir
+/home/wang/Documents/PythonLearn/example/baremetal/blinky/build/embarc_osp/arc/CMakeFiles/rebuild_cache.dir
+/home/wang/Documents/PythonLearn/example/baremetal/blinky/build/embarc_osp/arc/CMakeFiles/edit_cache.dir
